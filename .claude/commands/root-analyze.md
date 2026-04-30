@@ -38,11 +38,22 @@ Read the project `CLAUDE.md` for citation conventions.
 ## Output contract (non-negotiable)
 
 1. **Every novel observation traces back to a subagent finding or a
-   primary citation.** "Eyrie struggles against Marquise turtle in
+   cited source.** "Eyrie struggles against Marquise turtle in
    late-game" must anchor either to a specific finding from
-   `root-strategist` (quoted/paraphrased with attribution) or to a direct
-   `rule:X.Y.Z` / `card:ROOT-N (deck)` citation. No free-floating
-   syntheses.
+   `root-strategist` (quoted/paraphrased with attribution) or to a
+   cited source — and citations sit in three layers, all of which
+   you reproduce in the synthesis when load-bearing:
+   - **Rules** (authoritative, backtick form): `rule:X.Y.Z`,
+     `faction:KEY$X.Y.Z`, `card:ROOT-N (deck)`, `faq:stub`.
+   - **Faction profile** (project's derivative strategy view,
+     relative markdown link): `[<Faction> profile § <Section>](docs/factions/<slug>.md#<anchor>)`.
+   - **Third-party strategy** (community corroboration, relative
+     markdown link): `[<Source> § <Faction>](docs/strategy/sources/<basename>.md#<anchor>)`.
+     Strategy sources have a `# Review` section — claims the review
+     flagged as inaccurate must NOT be propagated. The numeric
+     `accuracy_rating` is not a filter; the review notes are.
+   No free-floating syntheses; no rule-only citations when a profile
+   or strategy section directly addresses the lever.
 
 2. **Surface conflicts rather than picking silently.** If
    `root-strategist` and `root-referee` give contradictory answers,
@@ -54,9 +65,13 @@ Read the project `CLAUDE.md` for citation conventions.
    of conventional wisdom), say so and trace the combination of findings
    that makes it plausible.
 
-4. **Distinguish facts from judgment.** Rules and card text are facts
-   (cite). Strategy is judgment (acknowledge uncertainty where it
-   exists).
+4. **Distinguish facts from judgment, and rank citations by
+   authority on conflict.** Rules and card text are facts (cite in
+   backticks); profile and strategy are derivative (cite as relative
+   markdown links). On contradiction, the Law wins — the profile is
+   the project's derivative reading, and strategy is community
+   corroboration. Note conflicts when they arise rather than
+   silently picking a winner.
 
 5. **Every strategic claim passes the actionability + counterfactual
    gate before you publish it.** Either generate it through that gate

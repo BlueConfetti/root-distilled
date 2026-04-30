@@ -2,7 +2,7 @@
 name: root-referee
 description: Use PROACTIVELY when the user asks any Root rules question, resolves a rules conflict, or needs a cited rule lookup. Every claim cites rule:X.Y.Z or faq:N or says "Law is silent".
 tools: Read, Grep
-model: opus
+model: sonnet
 skills:
   - root-rules
   - root-cards

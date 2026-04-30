@@ -49,7 +49,7 @@ When designing a new pipeline:
 - `/root-analyze` — synthesis orchestrator (decomposes questions, fans out the five layer-2 agents in parallel)
 - `/root-strategy-pipeline` — curation pipeline orchestrator (parallel discovery + parallel extraction in waves of 3, manifest-tracked, resumable)
 - `/root-3p-review` — third-party review pipeline orchestrator (parallel review of curated docs in waves of 3, fills accuracy frontmatter + appends `# Review` sections, manifest-tracked)
-- `/root-cheatsheet` — help/hurt cheatsheet revision orchestrator (per-faction four-phase pipeline `generate -> rules-verify -> pragmatic-vet -> synthesize`; parallel across categories within a faction and waves of 3 factions across scope; backs up the cheatsheet before any wave writes)
+- `/root-cheatsheet` — help/hurt cheatsheet revision orchestrator for a **single faction per invocation**. Four-phase pipeline `generate -> rules-verify -> pragmatic-vet -> synthesize`. Phase 1 fans out 3 strategists (one per category); phases 2 and 3 fan out **per claim** — one referee and one pragmatist per claim — so each verdict stays focused on a single claim. Backs up the cheatsheet before Phase 4 writes.
 
 **Existing thin slash commands (single-target dispatch — fine to write as a thin wrapper):**
 - `/root-strategy-curate` — single curation target hand-off to `root-strategy-curator`
@@ -62,7 +62,8 @@ When designing a new pipeline:
 | `root-strategist` | Faction win conditions, matchup analysis, board-state questions |
 | `root-coach` | Post-mortem walking, decision-point analysis (Socratic) |
 | `root-author` | Drafting faction primers, strategy articles, teaching material |
-| `root-pragmatist` | Validating strategy claims for actionability + counterfactual correctness; categorizes claims into KEEP / MOVE_TO_AWARENESS / DROP / FLAG |
+| `root-pragmatist` | Validating strategy claims for actionability + counterfactual correctness; categorizes claims into KEEP / MISFRAMED / DROP / MOVE_TO_AWARENESS / FLAG |
+| `root-awareness-curator` | Filtering Awareness claims for surprise (non-obvious to an intermediate player) + decision impact (changes a tactical decision); categorizes claims into KEEP / OBVIOUS / INERT / FLAG. No rescue path — kept-or-dropped at the gate. |
 | `root-strategy-curator` | Fetches and distills one third-party Root strategy source per invocation. Used by `/root-strategy-curate` (single) and `/root-strategy-pipeline` (parallel waves). Content pipeline, not strategist. |
 | `root-3p-reviewer` | Reviews one curated third-party file claim-by-claim against the Law and faction profiles. Fills frontmatter accuracy fields and appends/replaces a `# Review` section. Used by `/root-3p-review` (parallel waves). Owns only accuracy frontmatter + Review section; never modifies curator-owned content. |
 
@@ -86,7 +87,12 @@ When designing a new pipeline:
 
 ## Citation Conventions
 
-All citations go inside backticks. Use these prefixes:
+Two citation forms in this project, asymmetric by storage:
+
+### Backtick string cites — for YAML-indexed sources
+
+These index data inside `rules/`, `cards/`, etc. — no clickable target. All
+go inside backticks:
 
 - `rule:X.Y.Z` — full rule reference (e.g., `rule:6.1.2`)
 - `rule:X.` — section-level reference (e.g., `rule:22.`)
@@ -98,6 +104,47 @@ All citations go inside backticks. Use these prefixes:
 
 Two backtick groups adjacent with no space between them are two separate citations
 (this pattern appears in the Law itself).
+
+### Relative markdown links — for filesystem-navigable derivative sources
+
+These point at markdown files under `docs/factions/` and
+`docs/strategy/sources/` and render as clickable links from
+`docs/root-faction-help-hurt-cheatsheet.md` and other docs in the same
+tree. Use standard `[text](relative/path.md#anchor)` form. Paths are
+**relative to the citing document**, so a citation written into
+`docs/root-faction-help-hurt-cheatsheet.md` uses `factions/eyrie.md`,
+not `docs/factions/eyrie.md`.
+
+- **Profile**: `[<Faction display name> profile § <Section>](factions/<slug>.md#<section-anchor>)`
+  — section-anchor is the GitHub-style kebab-cased H2/H3 from the profile.
+  - Example: `[Eyrie profile § Scoring Engine](factions/eyrie.md#scoring-engine)`
+  - Example (rules-section deep cite): `[Eyrie profile § Decree Resolution](factions/eyrie.md#decree-resolution)`
+- **Strategy**: `[<Source> § <Faction>](strategy/sources/<basename>.md#<faction-anchor>)`
+  — `<basename>` is the filename without `.md`. `<Source>` is the
+  frontmatter `source:` field truncated at the first ` — ` separator
+  (e.g., "BoardGameGeek — Root Strategy Guide thread" → "BoardGameGeek");
+  fall back to `<basename>` if no `source:` is present. For sources
+  without a faction subsection, drop the `§ <Faction>` and the anchor
+  fragment.
+  - Example: `[BoardGameGeek § Eyrie](strategy/sources/boardgamegeek--root-strategy-guide.md#eyrie)`
+  - Example (no faction subsection): `[MakeCraftGame § Faction Scoring Models](strategy/sources/makecraftgame--faction-scoring-models.md)`
+
+### Layering and authority
+
+- `rule:` and `faction:` are **authoritative** — the Law of Root.
+- `profile:` (markdown link to `factions/`) is the project's
+  **derivative** strategy view. Used in parallel with rules during
+  analysis; does **not** override the Law on conflicts.
+- Strategy markdown links are **third-party corroboration**. Used in
+  parallel with rules and profiles; same precedence rule — Law wins on
+  conflicts. Read the source's `# Review` section before propagating a
+  strategy claim — claims the review flagged as inaccurate must not be
+  cited as if accurate. (Numeric `accuracy_rating` is not a filter; the
+  review notes are.)
+- A bullet that genuinely has no profile or strategy backing stays
+  rule-only. Do not pad citations with irrelevant section links just
+  to hit a quota — the rationale should say "profile silent on this"
+  if relevant.
 
 ## Faction Display-Name → Citation-Key Map
 

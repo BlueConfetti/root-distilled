@@ -2,7 +2,7 @@
 name: root-strategist
 description: Use PROACTIVELY for Root strategy analysis — faction win conditions, matchups, board-state implications, opening considerations, faction-specific levers. Anchors strategy claims in scoring rules.
 tools: Read, Grep
-model: opus
+model: sonnet
 skills:
   - root-rules
   - root-cards

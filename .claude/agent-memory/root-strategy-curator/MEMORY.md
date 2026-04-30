@@ -1,2 +1,0 @@
-- [Chrome MCP availability](feedback_chrome_mcp_availability.md) — Chrome MCP tools are not always present; check before dispatching BGG fetches.
-- [BGG fetch requires Chrome MCP](project_bgg_fetch_path.md) — BGG thread 2138017 stub written; needs Chrome MCP session to complete.

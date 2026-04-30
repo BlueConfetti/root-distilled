@@ -19,7 +19,8 @@ Print the help block below verbatim. Do not paraphrase, do not add commentary, d
 | `root-strategist` | Faction win conditions, matchups, board-state, scoring tempo |
 | `root-coach` | Post-mortem decision-point analysis (Socratic) |
 | `root-author` | Drafting faction primers, strategy articles, teaching material |
-| `root-pragmatist` | Validating strategy claims — KEEP / MOVE_TO_AWARENESS / DROP / FLAG |
+| `root-pragmatist` | Validating H/H strategy claims — KEEP / MISFRAMED / DROP / MOVE_TO_AWARENESS / FLAG |
+| `root-awareness-curator` | Filtering Awareness claims for surprise + decision impact — KEEP / OBVIOUS / INERT / FLAG |
 | `root-strategy-curator` | Fetch + distill one third-party source (typically used by `/root-strategy-curate`) |
 | `root-3p-reviewer` | Review one curated file (typically used by `/root-3p-review`) |
 
@@ -45,7 +46,7 @@ Print the help block below verbatim. Do not paraphrase, do not add commentary, d
 | `/root-strategy-curate <target>` | Curate one third-party source (URL, source name, faction, or topic) |
 | `/root-strategy-pipeline [scope] [flags]` | End-to-end strategy curation — parallel discovery + extraction in waves |
 | `/root-3p-review [scope] [flags]` | Review curated third-party content against the Law of Root |
-| `/root-cheatsheet [<faction-slug>...] [flags]` | Audit + extend the help/hurt cheatsheet — strategist/referee/pragmatist gates per category, waves of 3 factions |
+| `/root-cheatsheet <faction-slug> [flags]` | Audit + extend the help/hurt cheatsheet for a single faction — strategist per category, then per-claim referee + pragmatist |
 | `/root-help` | This help |
 
 ### `/root-strategy-pipeline` arguments
@@ -74,8 +75,7 @@ Print the help block below verbatim. Do not paraphrase, do not add commentary, d
 
 | Argument | Effect |
 |---|---|
-| (no args), `all` | All 13 factions in waves of 3 |
-| `<faction-slug>` (one or more) | Process only those factions (slugs only — no aliases like `cat`) |
+| `<faction-slug>` | **Required.** Process this one faction (slug only — no aliases like `cat`). Invoke once per faction. |
 | `--audit-only` | Verdict on existing entries; no new candidates |
 | `--additions-only` | Skip audit; only propose net-new candidates |
-| `--dry-run` | Print proposed sections + verdict tables; do not modify the file |
+| `--dry-run` | Print proposed section + verdict table; do not modify the file |
